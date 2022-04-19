@@ -1,36 +1,21 @@
+from turtle import pos
+from typing import Generator
 import rhino3dm as rg
 import networkx as nx
-import random
 
-#from notebook
-def createGridGraph(x, y):
 
-    M = nx.grid_2d_graph(x,y)
-    return M
+def createHouseGraph():
 
-def addRandomWeights(G):
+    House = nx.house_graph()
+    # explicitly set positions
+    pos = {0: (0, 0), 1: (1, 0), 2: (0, 1), 3: (1, 1), 4: (0.5, 2.0)}
 
-    NG = nx.Graph()
-    for u,v,data in G.edges(data=True):
-        #w = data['weight'] if 'weight' in data else 1.0
-        w = random.randint(1,10)
-        if NG.has_edge(u,v):
-            NG[u][v]['weight'] += w
-        else:
-            NG.add_edge(u, v, weight=w)
+    return House
+
+def getNodes(House):
+
+    lay =  nx.kamada_kawai_layout(House)
     
-    return NG
-
-
-#get the nodes from graph, convert the nodes to Rhino points
-def getNodes(G, layout = 0):
-
-    if layout == 0 : lay =  nx.kamada_kawai_layout(G)
-    elif layout == 1 : lay =  nx.circular_layout(G)
-    elif layout == 2 : lay =  nx.shell_layout(G)
-    elif layout == 3 : lay =  nx.spiral_layout(G)
-    else: lay = nx.planar_layout(G)
-
     nodes = []
     for d in lay.values():
         pt = rg.Point3d( d[0], d[1] , 0)
@@ -38,14 +23,9 @@ def getNodes(G, layout = 0):
 
     return nodes
 
-#get the edges from the graph, convert the edges to Rhino lines
-def getEdges(G, layout = 0):
+def getEdges(G):
 
-    if layout == 0 : lay =  nx.kamada_kawai_layout(G)
-    elif layout == 1 : lay =  nx.circular_layout(G)
-    elif layout == 2 : lay =  nx.shell_layout(G)
-    elif layout == 3 : lay =  nx.spiral_layout(G)
-    else: lay = nx.planar_layout(G)
+    lay =  nx.kamada_kawai_layout(G)
 
     edges = []
     for e in G.edges:
@@ -55,14 +35,3 @@ def getEdges(G, layout = 0):
         edges.append(line)
 
     return edges
-
-
-
-G = createGridGraph(3,3)
-GW = addRandomWeights(G)
-
-nodes = getNodes(G)
-edges = getEdges(G)
-
-
-
