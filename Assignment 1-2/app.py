@@ -1,3 +1,6 @@
+#Geo-opt Session02 Assignment 1-2
+#Hanna Läkk
+
 from flask import Flask
 import ghhops_server as hs
 import rhino3dm as rg

@@ -57,12 +57,3 @@ def getEdges(G, layout = 0):
     return edges
 
 
-
-G = createGridGraph(3,3)
-GW = addRandomWeights(G)
-
-nodes = getNodes(G)
-edges = getEdges(G)
-
-
-

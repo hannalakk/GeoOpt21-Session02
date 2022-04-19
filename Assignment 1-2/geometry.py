@@ -1,5 +1,3 @@
-from turtle import pos
-from typing import Generator
 import rhino3dm as rg
 import networkx as nx
 
@@ -15,7 +13,7 @@ def createHouseGraph():
 def getNodes(House):
 
     lay =  nx.kamada_kawai_layout(House)
-    
+
     nodes = []
     for d in lay.values():
         pt = rg.Point3d( d[0], d[1] , 0)
